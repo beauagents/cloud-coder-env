@@ -65,15 +65,15 @@ if [ -f requirements.txt ] || [ -f requirements-dev.txt ] || [ -f pyproject.toml
   fi
 
   echo "Running Python lint..."
-  if "${PYTHON_BIN}" -m pip show ruff >/dev/null 2>&1; then
-    "${PYTHON_BIN}" -m ruff check .
+  if command -v ruff >/dev/null 2>&1; then
+    ruff check .
   else
     echo "ruff not installed; skipping Python lint."
   fi
 
   echo "Running Python tests..."
-  if "${PYTHON_BIN}" -m pip show pytest >/dev/null 2>&1; then
-    "${PYTHON_BIN}" -m pytest
+  if command -v pytest >/dev/null 2>&1; then
+    pytest
   else
     echo "pytest not installed; skipping Python tests."
   fi
