@@ -50,7 +50,7 @@ If these directories do not exist yet, create only what is needed for the curren
 
 ## Supported Agents
 
-This repo is designed to work with cloud coding agents including GitHub Copilot, OpenAI Codex, Claude, Gemini, Travis CI, and Google Jules.
+This repo is designed to work with cloud coding agents including GitHub Copilot, OpenAI Codex, Claude, Gemini, and Google Jules.
 
 ## Jules
 

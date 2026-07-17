@@ -1,6 +1,6 @@
 # Cloud Coder Environment Sandbox
 
-This repository is a minimal, standards-based sandbox for cloud AI coding agents (for example: GitHub Copilot, OpenAI Codex, Claude, Gemini, Jules, Travis, and CI bots) to safely connect, read conventions, and make small validated changes.
+This repository is a minimal, standards-based sandbox for cloud AI coding agents (for example: GitHub Copilot, OpenAI Codex, Claude, Gemini, Jules, and CI bots) to safely connect, read conventions, and make small validated changes.
 
 ## Purpose
 
@@ -15,12 +15,11 @@ This repository is a minimal, standards-based sandbox for cloud AI coding agents
 - `AGENTS.md` - concise operational guidance for coding agents.
 - `.editorconfig` - cross-editor formatting defaults.
 - `.gitignore` - Node.js + Python ignores.
-- `.github/workflows/ci.yml` - baseline CI checks.
+- `.github/workflows/ci.yml` - baseline CI checks (GitHub Actions).
 - `.github/ISSUE_TEMPLATE/` - issue templates.
 - `.github/pull_request_template.md` - PR template.
-- `.travis.yml` - Travis CI example.
-- `scripts/setup.sh` - shared setup command for supported cloud agents, including Jules.
-- `docs/jules.md` - Jules connection and snapshot instructions.
+- `scripts/setup.sh` - portable environment setup script for supported cloud agents, including Jules.
+- `docs/jules.md` - connecting the repo to Google Jules.
 - `LICENSE` - MIT license.
 
 ## Getting Started
@@ -39,7 +38,17 @@ This repository is a minimal, standards-based sandbox for cloud AI coding agents
 4. Update docs/templates if behavior or workflows change.
 5. Open a PR using `.github/pull_request_template.md`.
 
-Supported cloud agents currently include GitHub Copilot, OpenAI Codex, Claude, Gemini, Jules, and Travis-based automation. Jules users should point their Initial Setup command at `bash scripts/setup.sh`; see `docs/jules.md`.
+Supported cloud agents currently include GitHub Copilot, OpenAI Codex, Claude, Gemini, and Jules. Jules users should point their Initial Setup command at `bash scripts/setup.sh`; see `docs/jules.md`.
+
+## Environment Setup
+
+A portable setup script at `scripts/setup.sh` detects Node.js and Python projects, installs dependencies, and runs available lint/tests as validation:
+
+```sh
+bash scripts/setup.sh
+```
+
+For Jules specifically, use `bash scripts/setup.sh` as the Initial Setup command in the Jules Configuration window. See `docs/jules.md` for full connection steps.
 
 ## Local Validation
 
