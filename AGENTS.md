@@ -37,3 +37,17 @@ Use only commands relevant to files present in the repo:
 - `.github/ISSUE_TEMPLATE/` - issue templates
 
 If these directories do not exist yet, create only what is needed for the current task.
+
+
+## Supported Agents
+
+This repo is designed to work with cloud coding agents including GitHub Copilot, OpenAI Codex, Claude, Gemini, Travis CI, and Google Jules.
+
+## Jules
+
+[Jules](https://jules.google) is Google's asynchronous coding agent. It runs each task in a short-lived Ubuntu VM and reads this `AGENTS.md` and `README.md` for hints to set up the environment on the fly. For explicit setup, Jules runs a setup script.
+
+- Recommended Initial Setup command (Jules Configuration window): `bash scripts/setup.sh`
+- After a successful setup run, Jules takes an environment snapshot reused by future tasks.
+- Jules VMs preinstall Node.js, Bun, Python, Go, Java, and Rust, so avoid reinstalling these runtimes.
+- Full connection steps: see [`docs/jules.md`](docs/jules.md).
