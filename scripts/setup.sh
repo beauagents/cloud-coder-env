@@ -1,38 +1,86 @@
-#!/usr/bin/env sh
-# setup.sh - Environment setup for cloud coding agents (Jules, Codex, etc.)
-# Idempotent, lightweight, POSIX-sh. Detects Node.js and Python projects,
-# installs dependencies, and runs lint/tests as validation when available.
+#!/bin/sh
+
 set -eu
 
-echo "== cloud-coder-env setup ="
-echo "node: $(command -v node >/dev/null 2>&1 && node -v || echo 'not found')"
-echo "python: $(command -v python3 >/dev/null 2>&1 && python3 --version || echo 'not found')"
+echo "Node version:"
+if command -v node >/dev/null 2>&1; then
+  node -v
+else
+  echo "node not found"
+fi
 
-# --- Node.js ---
+echo "Python version:"
+if command -v python >/dev/null 2>&1; then
+  PYTHON_BIN=python
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHON_BIN=python3
+else
+  PYTHON_BIN=
+fi
+
+if [ -n "${PYTHON_BIN}" ]; then
+  "${PYTHON_BIN}" --version
+else
+  echo "python not found"
+fi
+
 if [ -f package.json ]; then
-echo "[node] package.json detected"
-if command -v bun >/dev/null 2>&1 && [ -f bun.lockb ]; then
-bun install
-elif command -v npm >/dev/null 2>&1; then
-if [ -f package-lock.json ]; then npm ci || npm install; else npm install; fi
-fi
+  echo "Installing Node dependencies..."
+  if [ -f bun.lockb ] || [ -f bun.lock ]; then
+    if ! command -v bun >/dev/null 2>&1; then
+      echo "bun lockfile detected but bun is not installed" >&2
+      exit 1
+    fi
+    if ! bun install --frozen-lockfile; then
+      echo "frozen bun lockfile install failed; falling back to bun install" >&2
+      bun install
+      echo "bun install fallback completed"
+    fi
+  elif [ -f package-lock.json ]; then
+    npm ci
+  else
+    npm install
+  fi
+
+  echo "Running Node lint..."
+  npm run lint --if-present
+  echo "Running Node tests..."
+  npm test --if-present
+else
+  echo "No package.json found; skipping Node setup."
 fi
 
-# --- Python ---
-if [ -f requirements.txt ]; then
-echo "[python] requirements.txt detected"
-python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt
-elif [ -f pyproject.toml ]; then
-echo "[python] pyproject.toml detected"
-python3 -m pip install --upgrade pip
-python3 -m pip install -e . || python3 -m pip install .
-fi
+if [ -f requirements.txt ] || [ -f requirements-dev.txt ] || [ -f pyproject.toml ]; then
+  if [ -z "${PYTHON_BIN}" ]; then
+    echo "Python project detected but no Python interpreter is installed" >&2
+    exit 1
+  fi
 
-# --- Validation (best-effort) ---
-if [ -f package.json ] && command -v npm >/dev/null 2>&1; then
-npm run lint --if-present
-npm test --if-present
-fi
+  echo "Installing Python dependencies..."
+  "${PYTHON_BIN}" -m pip install --upgrade pip
+  if [ -f requirements.txt ]; then
+    "${PYTHON_BIN}" -m pip install -r requirements.txt
+  fi
+  if [ -f requirements-dev.txt ]; then
+    "${PYTHON_BIN}" -m pip install -r requirements-dev.txt
+  fi
+  if [ -f pyproject.toml ]; then
+    "${PYTHON_BIN}" -m pip install -e .
+  fi
 
-echo "== setup complete ="
+  echo "Running Python lint..."
+  if command -v ruff >/dev/null 2>&1; then
+    ruff check .
+  else
+    echo "ruff not installed; skipping Python lint."
+  fi
+
+  echo "Running Python tests..."
+  if command -v pytest >/dev/null 2>&1; then
+    pytest
+  else
+    echo "pytest not installed; skipping Python tests."
+  fi
+else
+  echo "No Python project files found; skipping Python setup."
+fi
