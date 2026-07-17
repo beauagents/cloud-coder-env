@@ -29,6 +29,15 @@ Use only commands relevant to files present in the repo:
 - Lint: run configured linter (for example `ruff check .` if configured)
 - Test: run configured test command (for example `pytest` if configured)
 
+## Jules
+
+- Jules is a supported cloud coding agent for this repository.
+- Jules reads `AGENTS.md` and `README.md` for setup hints during task startup, or it can run an explicit setup command.
+- Recommended Jules Initial Setup command: `bash scripts/setup.sh`
+- `scripts/setup.sh` installs detected Node.js and Python dependencies, prints runtime versions, and runs any available lint/test validation.
+- Jules Ubuntu VMs already include Node.js, Bun, Python, Go, Java, and Rust, so tasks should reuse those preinstalled tools instead of reinstalling runtimes.
+- After a successful Jules setup run, take a snapshot so later tasks can start from the prepared environment.
+
 ## Directory Layout (minimal baseline)
 
 - `src/` - application/source code
