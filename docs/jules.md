@@ -1,6 +1,6 @@
 # Jules Setup
 
-1. Open `https://jules.google/` and connect this repository.
+1. Open `https://jules.google/`, sign in, and make sure your account can access this repository.
 2. In Jules, open the repository configuration for the task.
 3. In **Configuration** > **Initial Setup**, paste `bash scripts/setup.sh`.
 4. Run the setup command.

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 set -eu
 
@@ -31,7 +31,9 @@ if [ -f package.json ]; then
       echo "bun lockfile detected but bun is not installed" >&2
       exit 1
     fi
-    bun install --frozen-lockfile
+    if ! bun install --frozen-lockfile; then
+      bun install
+    fi
   elif [ -f package-lock.json ]; then
     npm ci
   else
@@ -60,7 +62,7 @@ if [ -f requirements.txt ] || [ -f requirements-dev.txt ] || [ -f pyproject.toml
   if [ -f requirements-dev.txt ]; then
     "${PYTHON_BIN}" -m pip install -r requirements-dev.txt
   fi
-  if [ -f pyproject.toml ] && [ ! -f requirements.txt ] && [ ! -f requirements-dev.txt ]; then
+  if [ -f pyproject.toml ]; then
     "${PYTHON_BIN}" -m pip install .
   fi
 
