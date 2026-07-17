@@ -32,6 +32,7 @@ if [ -f package.json ]; then
       exit 1
     fi
     if ! bun install --frozen-lockfile; then
+      echo "bun install --frozen-lockfile failed; falling back to bun install" >&2
       bun install
     fi
   elif [ -f package-lock.json ]; then
@@ -63,7 +64,7 @@ if [ -f requirements.txt ] || [ -f requirements-dev.txt ] || [ -f pyproject.toml
     "${PYTHON_BIN}" -m pip install -r requirements-dev.txt
   fi
   if [ -f pyproject.toml ]; then
-    "${PYTHON_BIN}" -m pip install .
+    "${PYTHON_BIN}" -m pip install -e .
   fi
 
   echo "Running Python lint..."
