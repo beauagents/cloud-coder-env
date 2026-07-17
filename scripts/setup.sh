@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 set -eu
 
@@ -34,6 +34,7 @@ if [ -f package.json ]; then
     if ! bun install --frozen-lockfile; then
       echo "bun install --frozen-lockfile failed; falling back to bun install" >&2
       bun install
+      echo "bun install fallback completed"
     fi
   elif [ -f package-lock.json ]; then
     npm ci
