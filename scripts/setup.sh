@@ -32,7 +32,7 @@ if [ -f package.json ]; then
       exit 1
     fi
     if ! bun install --frozen-lockfile; then
-      echo "bun install --frozen-lockfile failed; falling back to bun install" >&2
+      echo "Frozen Bun lockfile install failed; falling back to bun install" >&2
       bun install
       echo "bun install fallback completed"
     fi
