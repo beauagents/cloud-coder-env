@@ -1,6 +1,6 @@
 # Cloud Coder Environment Sandbox
 
-This repository is a minimal, standards-based sandbox for cloud AI coding agents (for example: GitHub Copilot, OpenAI Codex, Claude, Gemini, and CI bots) to safely connect, read conventions, and make small validated changes.
+This repository is a minimal, standards-based sandbox for cloud AI coding agents (for example: GitHub Copilot, OpenAI Codex, Claude, Gemini, Jules, and CI bots) to safely connect, read conventions, and make small validated changes.
 
 ## Purpose
 
@@ -43,3 +43,18 @@ This sandbox intentionally does not force one language stack. CI auto-detects av
 ## License
 
 MIT - see `LICENSE`.
+
+
+## Supported Cloud Agents
+
+This sandbox is intended to work with: GitHub Copilot, OpenAI Codex, Claude, Gemini, Travis CI, and Google Jules.
+
+## Environment Setup Script
+
+A portable setup script lives at `scripts/setup.sh`. It detects Node.js and Python projects, installs dependencies, and runs available lint/tests as validation:
+
+```sh
+bash scripts/setup.sh
+```
+
+For Jules specifically, use `bash scripts/setup.sh` as the Initial Setup command in the Jules Configuration window. See `docs/jules.md` for full connection steps.
